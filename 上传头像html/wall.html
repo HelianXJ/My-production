@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="textml; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta name="format-detection" content="telephone=no" />
+<title>星计划</title>
+<link rel="stylesheet" media="screen" href="css/style.css" />
+<script>
+    function is_weixn(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
+    var isWX = is_weixn();  //判断是否在微信中打开页面
+    if(!isWX){ 
+        //window.location.href = "";
+    }
+</script>
+</head>
+<body>
+    <input type="hidden" id="fromUrl" value="0"/> <!--如果为1表示从图文进，如果为0表示从分享连接进-->
+    <input type="hidden" id="userId" value="323"/>
+
+    <img class="g-bnr" src='images/bnr.jpg' />
+    <div class="g-cnt">
+        <a class="refreshBtn" href="javascript:;" onclick="javascript:location.reload();"></a>
+        <a class="listBtn" href="list.html"></a>
+        <a class="ruleBtn" href="javascript:;"></a>
+        <div class="m-tit"><span>晋级选手</span></div>
+        <div class="m-pwLists">
+            <ul class="m-pwList m-pwListL">
+                <li>
+                    <div class="pwImg">
+                        <img src="demo/view03.jpg">
+                    </div>
+                    <div class="pwPst">
+                        <span class="cr"></span>
+                        <span class="cm"></span>
+                    </div>
+                    <div class="pwData">
+                        <div class="pwTitle">杨小米</div>
+                        <a class="pwPraise" data-id="001" href="javascript:;">125</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="pwImg">
+                        <img src="demo/view04.jpg">
+                    </div>
+                    <div class="pwPst">
+                        <span class="cr"></span>
+                        <span class="cm"></span>
+                    </div>
+                    <div class="pwData">
+                        <div class="pwTitle">杨小米</div>
+                        <a class="pwPraise pwPraiseOver" data-id="001" href="javascript:;">125</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="m-pwList m-pwListR">
+                <li>
+                    <div class="pwImg">
+                        <img src="demo/view01.jpg">
+                        <div class="hot"></div>
+                    </div>
+                    <div class="pwPst">
+                        <span class="cr"></span>
+                        <span class="cm"></span>
+                    </div>
+                    <div class="pwData">
+                        <div class="pwTitle">杨小米</div>
+                        <a class="pwPraise" data-id="001" href="javascript:;">125</a>
+                    </div>
+                </li>
+                <li>
+                    <div class="pwImg">
+                        <img src="demo/view02.jpg">
+                    </div>
+                    <div class="pwPst">
+                        <span class="cr"></span>
+                        <span class="cm"></span>
+                    </div>
+                    <div class="pwData">
+                        <div class="pwTitle">杨小米</div>
+                        <a class="pwPraise" data-id="001" href="javascript:;">125</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="m-share">
+            <a href="javascript:void(0);"><img src="images/share1.png"/></a>
+            <a href="javascript:void(0);"><img src="images/share2.png"/></a>
+        </div>
+        <div class="mask"><img src="images/guide.png"/></div>
+        <div class="ruleMask"></div>
+        <div class="ruleWrap">
+            <div class="ruleTitle"></div>
+            <div class="ruleClose"></div>
+            <div class="ruleCnt">
+                <p><strong>1.  </strong>选择您喜欢的选手，给他们投票</p>
+                <p><strong>2.  </strong>投票时间：比赛次周周一<strong>12:00</strong>~周五<strong>12:00</strong>，为投票时间！</p>
+                <p><strong>3.  </strong>票数最高的选手，恭喜你，直接成功晋级到本次大赛的复赛，准备你的新作品参加决赛吧！别忘了感谢给你投票的小伙伴哦！</p>
+            </div>
+        </div>
+        <div class="m-cyr">互动营销@艾迪互动</div>
+    </div>
+    
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/plug.wxshare.js"></script>
+    <script>
+        function picLayout(){
+            var w = ($(window).width() - 62)/2;
+            $(".m-pwList>li").width(w);
+        }
+        picLayout();
+        $(window).resize(function(){
+            picLayout();
+        })
+        $(".m-share>a").click(function(){
+            $(".mask").show();
+            $(".mask").bind("click",function(){
+                $(".mask").hide();
+            });
+        });
+        $(".pwImg>img").load(function(){
+            $(this).parent().css("background","none");
+            $(this).addClass("loadImg");
+        });
+        $(".ruleBtn").click(function(){
+            $(".ruleWrap,.ruleMask").show();
+        });
+        $(".ruleMask,.ruleClose").click(function(){
+            $(".ruleWrap,.ruleMask").hide();
+        });
+        $(".pwPraise").click(function(){
+            var _this = $(this);
+            if($("#formUrl").val() == 0){
+                window.location.href = "";
+                return;
+            }
+            if(_this.hasClass("pwPraiseOver")){
+                return;
+            }
+            var praiseNum = parseInt(_this.text());
+            var submitData = {
+                imgId : _this.attr("data-id"),
+                userId : $("#userId")
+            }
+            /*$.ajax({ 
+                url:"",
+                type:"get",
+                dataType:"text",
+                cache:false,
+                data:submitData,
+                success:function(data) { */
+                    _this.text(++praiseNum);
+                    _this.addClass("pwPraiseOver");
+                /*}
+            });*/
+        })
+    </script>
+    <script>
+    //分享页面
+    _WXShare('images/shareImg.jpg','100','100','','','');
+    </script>
+</body>
+</html>

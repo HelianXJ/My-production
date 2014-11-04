@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="textml; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta name="format-detection" content="telephone=no" />
+<title>星计划</title>
+<link rel="stylesheet" media="screen" href="css/style.css" />
+<script>
+    function is_weixn(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
+    var isWX = is_weixn();  //判断是否在微信中打开页面
+    if(!isWX){ 
+        //window.location.href = "";
+    }
+</script>
+</head>
+<body>
+    <img class="g-bnr" src='images/bnr.jpg' />
+    <div class="g-cnt">
+       <div class="m-tit"><span>报名信息</span></div>
+       <div class="m-result">
+           <div class="m-rstPrt">
+               <div class="prt" style="background-image:url('demo/prt.jpg');"></div>
+               <div class="signet"></div>
+           </div>
+           <p class="m-rstTip">报名成功啦！您填写的信息如下：</p>
+           <img class="m-lineBg" src="images/lineBg.png"/>
+           <table class="m-rstTable">
+               <tr>
+                   <th>姓名：</th>
+                   <td>杨小米</td>
+               </tr>
+               <tr>
+                   <th>年龄：</th>
+                   <td>12</td>
+               </tr>
+               <tr>
+                   <th>组别：</th>
+                   <td>少儿组</td>
+               </tr>
+           </table>
+           <img class="m-lineBg" src="images/lineBg.png"/>
+           <table class="m-rstTable">
+               <tr>
+                   <th>联系人姓名：</th>
+                   <td>杨大米</td>
+               </tr>
+               <tr>
+                   <th>联系人电话：</th>
+                   <td>12345677889</td>
+               </tr>
+               <tr>
+                   <th>联系人身份：</th>
+                   <td>业主</td>
+               </tr>
+               <tr>
+                   <th>置业顾问：</th>
+                   <td>王先生</td>
+               </tr>
+           </table>
+       </div>
+       <div class="m-cyr">互动营销@艾迪互动</div>
+    </div>
+    
+    <script type="text/javascript" src="js/plug.wxshare.js"></script>
+    <script>
+    //分享页面
+    _WXShare('images/shareImg.jpg','100','100','','','');
+    </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="textml; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta name="format-detection" content="telephone=no" />
+<title>星计划</title>
+<link rel="stylesheet" media="screen" href="css/style.css" />
+<script>
+    function is_weixn(){
+        var ua = navigator.userAgent.toLowerCase();
+        if(ua.match(/MicroMessenger/i)=="micromessenger") {
+            return true;
+        } 
+        else {
+            return false;
+        }
+    }
+    var isWX = is_weixn();  //判断是否在微信中打开页面
+    if(!isWX){ 
+        //window.location.href = "";
+    }
+</script>
+</head>
+<body>
+    <img class="g-bnr" src='images/bnr.jpg' />
+    <div class="g-cnt">
+        <form action="result.html" method="post" onsubmit="return checkForm();" autocomplete="on" enctype="multipart/form-data">
+            <div class="m-tit"><span>参赛者信息</span></div>
+            <div class="m-tip">请仔细填写下方信息<br/>通过此方式报名免收报名费</div>
+            <ul class="m-form">
+                <li>
+                    <div class="tl">姓名：</div>
+                    <div class="tr">
+                        <input class="u-text" id="csName" name="csName" placeholder="请输入参赛者姓名" type="text" />                           
+                    </div>
+                </li>
+                <li>
+                    <div class="tl">年龄：</div>
+                    <div class="tr">
+                        <select class="u-select" id="age" name="age">
+                            <option value="">请选择参赛者年龄</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                        </select>                            
+                    </div>
+                </li>
+                <li>
+                    <div class="tl">组别：</div>
+                    <div class="tr">
+                        <input type="hidden" id="group" name="group" value=""/>
+                        <span class="ageGroup">幼儿组</span>
+                        <span class="ageGroup">小学组</span>
+                        <span class="ageGroup">中学组</span>
+                    </div>
+                </li>
+                <li>
+                    <div class="tl">头像：</div>
+                    <div class="tr">
+                        <div class="fileWrap"><input type="file" id="prtImg" name="prt" onchange="preView(this);"/></div>
+                        <div class="u-file" id="prtBtn">上传头像</div>  
+                        <div class="prevImg" id="prevImg"></div>                          
+                    </div>
+                </li>
+            </ul>
+            <div class="m-tit"><span>联系人信息</span></div>
+            <ul class="m-form">
+                <li>
+                    <div class="tl">姓名：</div>
+                    <div class="tr">
+                        <input class="u-text" id="lxName" name="lxName" placeholder="请输入联系人姓名" type="text" />                           
+                    </div>
+                </li>
+                <li>
+                    <div class="tl">电话：</div>
+                    <div class="tr">
+                        <input class="u-text" id="tel" name="tel" placeholder="请输入联系人电话" type="tel" />                            
+                    </div>
+                </li>
+                <li>
+                    <div class="tl">身份：</div>
+                    <div class="tr">
+                        <select class="u-select" id="yz" name="yz">
+                            <option value="">业主 / 非业主</option>
+                            <option value="1">业主</option>
+                            <option value="0">非业主</option>
+                        </select>                           
+                    </div>
+                </li>
+                <li>
+                    <div class="tl">置业顾问：</div>
+                    <div class="tr">
+                        <input class="u-text" id="pc" name="pc" placeholder="选填" type="text" />                            
+                    </div>
+                </li>
+                <input id="submitBtn" class="u-btn submitBtn" value="提交报名信息" type="submit" /> 
+            </ul>
+        </form>
+        <div class="m-cyr">互动营销@艾迪互动</div>
+    </div>
+    <div class="confirm" id="windowConfirm">
+        <article>
+            <h1>操作提示</h1>
+            <p class="cont"></p>
+            <a href="javascript:void(0);" class="yes" id="closeAlert">确 定</a>
+        </article>
+    </div>
+    <div id="modal"></div>
+    <div class="popLoad" id="popLoad">
+        <div class="loadImg"></div>
+        <div class="loadText">请稍等</div>
+    </div>
+
+    <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="js/plug.wxshare.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#age").change(function(){
+                var cAge = $(this).val();
+                if(cAge == ""){
+                    $("#group").val("");
+                    $(".ageGroup").removeClass("ageGroupSel");
+                }
+                else if(cAge <= 5){
+                    $("#group").val("幼儿组");
+                    $(".ageGroup").eq(0).addClass("ageGroupSel").siblings(".ageGroup").removeClass("ageGroupSel");
+                }
+                else if(cAge <= 11 && cAge > 5){
+                    $("#group").val("小学组");
+                    $(".ageGroup").eq(1).addClass("ageGroupSel").siblings(".ageGroup").removeClass("ageGroupSel");
+                }
+                else{
+                    $("#group").val("中学组");
+                    $(".ageGroup").eq(2).addClass("ageGroupSel").siblings(".ageGroup").removeClass("ageGroupSel");
+                }
+            });
+            $("#prtBtn").click(function(){
+                $("#prtImg").click();
+            });
+        });
+
+        //头像预览
+        function preView(f){
+            var reg = new RegExp("\\.jpg$|\\.jpeg$|\\.png$|\\.gif$|\\.bmp$", "i");
+            if (!reg.test(f.value)) {
+                alert("您选择的不是图片");
+            } 
+            else {
+                var sbox = document.getElementById("prevImg");
+                if (typeof FileReader=="undefined"){
+                    f.select();
+                    sbox.innerHTML="";
+                    sbox.filters["DXImageTransform.Microsoft.AlphaImageLoader"].src = document.selection.createRange().text;
+                } 
+                else {
+                    $(sbox).addClass("prevImgShow");
+                    var ig = document.createElement("img"),
+                        fr = new FileReader();
+                    fr.onload=function(){
+                        ig.src=this.result; 
+                        sbox.innerHTML = "";
+                        sbox.appendChild(ig);
+                    }
+                    ig.onload=function(){
+                        var _this = $(this);
+                        _this.addClass("loadImg");
+                    }
+                    fr.readAsDataURL(f.files[0]);           
+                }
+                $("#prtBtn").text("已上传");
+            }
+        }
+
+        var submitLock = false;
+        function checkForm(){
+            if(submitLock){
+                return false;
+            }
+            var csName = $("#csName").val().replace(/\s/g, ""),
+                age = $("#age").val(),
+                group = $("#group").val(),
+                lxName = $("#lxName").val().replace(/\s/g, ""),
+                tel = $("#tel").val().replace(/\s/g, ""),
+                yz = $("#yz").val();
+
+            if(csName == ""){
+                alert('请输入参赛者姓名');
+                return false;
+            }
+            if(age == ""){
+                alert('请选择参赛者年龄');
+                return false;
+            }
+            if(lxName == ""){
+                alert('请输入联系人姓名');
+                return false;
+            } 
+            if(typeof(tel) !== 'undefined'){
+                if(tel == ""){
+                    alert('请输入联系人手机号');
+                    return false;
+                } 
+                var regu = /^[1][0-9]{10}$/;
+                var re = new RegExp(regu);
+                if (!re.test(tel)) {
+                    alert("请输入正确的手机号");
+                    return false;
+                }
+            } 
+            if(yz == ""){
+                alert('请选择联系人身份');
+                return false;
+            } 
+            submitLock = true;
+            $("#popLoad").addClass("popLoad-show");
+        }
+        
+        function alert(cont){ 
+            var popElm = $("#windowConfirm");
+            var popWidth = popElm.width();
+            var popHeight = popElm.height();
+            var pageWidth = $(window).width();
+            var winHeight = $(window).height();
+            var popLeft = (pageWidth - popWidth)/2;
+            var popTop = (winHeight - popHeight)/2;
+            popElm.css({"left":popLeft+"px","top":popTop+"px"});
+            popElm.find(".cont").text(cont);
+            $("#windowConfirm").show();
+            $("#modal").show();
+            $("#modal,#closeAlert").click(function(){
+                $("#windowConfirm").hide();
+                $("#modal").hide();
+            });
+        } 
+    </script>
+    <script>
+    //分享页面
+    _WXShare('images/shareImg.jpg','100','100','','','');
+    </script>
+</body>
+</html>
